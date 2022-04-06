@@ -1,0 +1,84 @@
+Window.java Class
+-> Under GamePlayer Name Button, you need to set the value extracted from the text to the player object.
+
+
+MISC:
+-> look for the common parts which are repeated and using functions for it so that it does not violates the DRY Principles.
+-> * Windows.java [ (playerStartsBtn.addActionListener( e -> {) && (playerStartsBtn.addActionListener( e -> {) ]
+
+
+TODO define:
+-> Create the main game board
+* Header line about whose turn it is. [JLabel]
+* Player's Character assigned. [JLabel]
+* Current String. [JLabel]
+* Current String Length. [JLabel]
+* Updated String after Flip [JLabel]
+* Updated String Length. [JLabel]
+* Flip Character
+* Pos 1 [JButton]
+* Pos 2 [JButton]
+* Pos 1 & 2 [JButton]
+
+// make the choice in behalf of the computer
+                compChoice = GameFlow.computerChoice();
+                tobeUpdatedCharString = string.getStringArray();
+
+                // highlight the button chosen in behalf of the computer
+                if(compChoice == 1)
+                {
+                    // display the button 1 as highlighted as computer chosen choice
+                    posOneBtn.setForeground(Color.BLUE);
+                    // flip the position One
+                    string.setStringArray(GameFlow.flipCharactersPosition(tobeUpdatedCharString, 1));
+                }
+                else if(compChoice == 2)
+                {
+                    // display the button 2 as highlighted as computer chosen choice
+                    posTwoBtn.setForeground(Color.BLUE);
+                    // flip the position Two
+                    string.setStringArray(GameFlow.flipCharactersPosition(tobeUpdatedCharString, 2));
+                }
+                else
+                {
+                    // display the button 3 as highlighted as computer chosen choice
+                    posOneNTwoBtn.setForeground(Color.BLUE);
+                    // flip the position Three
+                    string.setStringArray(GameFlow.flipCharactersPosition(tobeUpdatedCharString, 3));
+                }
+
+                Timer timeDelay = new Timer( compDelay, ev -> {
+                    // the code will be executed once the delay is over
+
+                    // reset the highlight create over button
+                    if(compChoice == 1)
+                        posOneBtn.setForeground(Color.RED);
+                    else if( compChoice == 2)
+                        posTwoBtn.setForeground(Color.RED);
+                    else
+                        posOneNTwoBtn.setForeground(Color.RED);
+
+                    // fetch the flipped string
+                    updatedCharString = string.getStringArray();
+                    // update current length of the string
+                    currentLength -= 1;
+                    // update the length of the string object
+                    string.setLength(currentLength);
+                    // fetch the combined strings after flipping the position
+                    string.setStringArray(GameFlow.combinePositions(updatedCharString, currentLength));
+                    // switch heading: player -> computer or computer -> player
+                    heading.setText(name + "'s turn");
+                    // set character assigned of whose turn it is
+                    pCharacter.setText("Character Assigned: '" + player.getGameStringAssigned() + "'" );
+                    // set the updated string to the currentString Label
+                    currentGameString = Arrays.toString(string.getStringArray()).substring(1,string.getLength()*3-1);
+                    currentString.setText("Current String: < " + currentGameString + " >");
+                    // set the updated string length to the currentStringLength
+                    currentStringLength.setText("Current String Length: " + string.getLength());
+                    // set isPlayerTurn -> true
+
+                    isPlayerTurn = false;
+                });
+
+                timeDelay.start();
+                timeDelay.setRepeats( false );
